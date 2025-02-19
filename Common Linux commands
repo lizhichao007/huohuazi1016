@@ -1,0 +1,21 @@
+防止远程登录掉线
+[root@localhost ~]# TMOUT=0
+查看文件哈希值
+[root@localhost ~]# sha256sum anaconda-ks.cfg
+aeed1febf0fcf3d4a42757f6f0f137d6b675525a87b4ba675db8ffe40c40e34c  anaconda-ks.cfg
+linux命令行快捷键
+  Ctrl + U 向前清除   Ctrl + K 向后清除    Ctrl+ a 命令的行首   ctrl + e   命令的行尾
+vim编辑器快捷键
+  0 行首 e 行尾 gg 文档行首 G 文档行尾
+编辑shell脚本小技巧
+  set -x   //写在脚本里边执行的时候可以顺便检查脚本的错误和显示执行过程
+  set -e   //表示任何语句执行的结果不是true，则应该退出。防止错误像滚雪球一样继续变大
+$# 表示脚本程序的命令参数个数活函数的参数个数
+$$ 表示该脚本程序的进程号，常用于生成文件名唯一的临时文件
+$? 表示脚本程序或函数的返回状态值，正常为0，否则为非零的错误号。
+$* 表示所有的脚本参数或函数参数
+$! 表示最近一个在后台运行的进程的进程号
+暴力卸载
+  fusermount -zu /dev/sda1
+重新生成grub.cfg文件
+  grub2-mkconfig -o /boot/grub2/grub.cfg
