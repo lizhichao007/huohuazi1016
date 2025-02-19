@@ -19,3 +19,5 @@ $! 表示最近一个在后台运行的进程的进程号
   fusermount -zu /dev/sda1
 重新生成grub.cfg文件
   grub2-mkconfig -o /boot/grub2/grub.cfg
+
+
