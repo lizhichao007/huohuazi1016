@@ -1,0 +1,9 @@
+1 win+r输入cmd进入命令行界面
+2 netstat -ano 查询出列出所有端口的情况。
+3 netstat -aon|findstr "端口号" 找出对应PID。
+4 tasklist | findstr "PID" 查出正在运行的服务。
+5 shutdown -r -t 0 电脑重启
+6 winver 查看版本
+7 taskkill -pid 8443 -f 终止端口
+8 sc delete xxx  卸载进程
+9 按win键，输入env回车，打开环境变量 
