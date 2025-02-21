@@ -1,0 +1,163 @@
+Overlay文件系统是一种联合文件系统，允许将多个文件系统叠加在一起，形成一个统一的视图。它通过写时复制（COW）机制，只存储修改的部分，从而节省存储空间。OverlayFS是Linux内核的一部分，支持增量更新，广泛应用于容器技术、软件开发和嵌入式系统。
+
+结构与工作原理
+
+OverlayFS由上层（upper）、下层（lower）和工作目录（work）组成。访问文件时，优先从上层查找，未找到时从下层获取。写入操作仅影响上层，下层保持不变，实现空间的高效利用。
+
+主要特点
+
+写时复制（COW）：修改时创建新文件，节省空间。
+支持增量更新：适用于容器和软件更新，快速启动和回滚。
+高效存储管理：共享下层镜像，减少重复存储。
+
+应用场景
+
+容器技术：Docker和Kubernetes使用OverlayFS管理镜像层，快速启动和停止容器。
+软件开发与测试：测试新版本软件，回滚便捷。
+嵌入式系统：管理有限存储空间中的软件更新。
+
+优点
+
+节省空间：仅存储修改部分。
+快速启动：共享下层镜像，启动时间短。
+易于回滚：上层可替换或删除，恢复基础状态。
+
+缺点
+
+性能问题：频繁访问上层和下层可能影响效率。
+复杂性：配置和维护对普通用户较困难。
+
+
+步骤1：准备基础镜像（下层）
+
+首先，我们需要一个基础的操作系统镜像，作为OverlayFS的下层（lower）。
+
+# 创建下层目录
+mkdir -p /lower
+
+# 将基础操作系统镜像挂载到/ lower目录
+mount -o ro,bind /base_image /lower
+如果上述命令挂载失败使用下方命令
+mount /base_image /lower
+
+步骤2：创建上层目录
+接下来，我们创建上层目录（upper），用于存储我们的修改和新安装的软件包。
+
+# 创建上层目录
+mkdir -p /upper
+
+步骤3：创建工作目录
+OverlayFS需要一个工作目录（work）来存储临时文件和元数据。
+
+# 创建工作目录
+mkdir -p /work
+
+步骤4：挂载OverlayFS
+现在，我们将OverlayFS挂载到一个目标目录，例如/mnt/overlay。
+
+# 挂载OverlayFS
+mount -t overlay overlay -o lowerdir=/lower,upperdir=/upper,workdir=/work /mnt/overlay
+
+步骤5：验证挂载
+检查OverlayFS是否成功挂载。
+
+# 查看挂载信息
+mount | grep overlay
+
+输出应类似如下：
+
+overlay on /mnt/overlay type overlay (lowerdir=/lower,upperdir=/upper,workdir=/work)
+
+步骤6：在OverlayFS上进行修改
+现在，我们可以在OverlayFS上进行修改，例如安装新的软件包。
+
+# 切换到OverlayFS挂载点
+cd /mnt/overlay
+
+# 安装新软件包
+sudo apt-get update && sudo apt-get install -y nginx
+#如果上述命令执行失败，执行一下命令
+[root@localhost x86_64]# rpm -ivh indic-fonts.rpm
+warning: indic-fonts.rpm: Header V3 RSA/SHA256 Signature, key ID 307e3d54: NOKEY
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:indic-fonts-2008.11.13-1.17      ################################# [100%]
+#查询是否安装成功
+[root@localhost x86_64]# rpm -qa | grep indic
+indic-fonts-2008.11.13-1.17.noarch
+
+
+步骤7：回滚到旧版本
+如果需要回滚到旧版本，只需删除上层目录的内容，重新挂载OverlayFS。
+
+# 删除上层目录的内容
+rm -rf /upper/*
+
+# 重新挂载OverlayFS
+umount /mnt/overlay
+mount -t overlay overlay -o lowerdir=/lower,upperdir=/upper,workdir=/work /mnt/overlay
+
+步骤8：验证回滚
+检查软件包是否回滚到旧版本。
+
+# 查看已安装的软件包
+dpkg -l | grep nginx
+[root@localhost ~]# rpm -qa | indic
+bash: indic: command not found...
+
+通过以上步骤，我们成功地在实际生产环境中使用OverlayFS来管理Web服务器的软件包。OverlayFS的写时复制机制确保了我们只存储修改的部分，节省了存储空间。同时，通过删除上层目录的内容，我们可以轻松地回滚到旧版本，提高了系统的维护效率。
+
+注意事项
+性能考虑：OverlayFS的性能依赖于上层和下层的访问频率。在频繁读写的场景中，可能需要优化挂载参数或使用不同的存储策略。
+数据持久性：OverlayFS的上层目录内容是持久化的，但在挂载时需要确保其可靠性。在生产环境中，建议使用可靠的存储介质。
+权限管理：OverlayFS挂载需要适当的权限设置，确保只有授权用户可以进行修改和回滚操作。
+
+结论
+OverlayFS通过灵活的叠加机制，提供高效存储管理和快速启动，适用于需要频繁更新和回滚的场景。尽管存在性能和复杂性挑战，但其在现代Linux系统中的应用广泛，特别是在容器技术中。
+
+
+#查看挂载信息
+[root@localhost ~]# df -h
+Filesystem             Size  Used Avail Use% Mounted on
+devtmpfs               1.9G     0  1.9G   0% /dev
+tmpfs                  1.9G     0  1.9G   0% /dev/shm
+tmpfs                  1.9G   42M  1.9G   3% /run
+tmpfs                  1.9G     0  1.9G   0% /sys/fs/cgroup
+/dev/mapper/rhel-root   17G  7.0G   10G  42% /
+tmpfs                  379M   28K  379M   1% /run/user/42
+tmpfs                  379M  4.0K  379M   1% /run/user/0
+/dev/sda1             1014M  169M  846M  17% /boot
+/dev/loop0             3.2G  3.2G     0 100% /lower
+overlay                 17G  7.0G   10G  42% /mnt/overlay
+
+#情景二
+假如/lower目录下和/upper目录下有不同文件或目录，在/mnt/overlay会同是显示
+[root@localhost ~]# mkdir /lower/a
+[root@localhost ~]# mkdir  /upper/b
+[root@localhost ~]# ls /mnt/overlay/
+a b
+假如文件名相同，那么会以/upper目录下的为准。
+[root@localhost ~]# touch /lower/test.txt
+[root@localhost ~]# echo 123 > /lower/test.txt
+[root@localhost ~]# touch /upper/test.txt
+[root@localhost ~]# echo 1234 > /upper/test.txt
+[root@localhost ~]# ll /mnt/overlay/
+total 4
+drwxr-xr-x. 2 root root 6 Feb 21 16:16 a
+drwxr-xr-x. 2 root root 6 Feb 21 16:16 b
+-rw-r--r--. 1 root root 5 Feb 21 16:23 test.txt
+[root@localhost ~]# cat /mnt/overlay/test.txt
+1234
+假如文件名相同，还是/upper目录下的为准吗？
+[root@localhost ~]# mkdir -p /lower/a/1/2/3
+[root@localhost ~]# mkdir -p /upper/a/1
+[root@localhost ~]# tree /mnt/overlay/
+/mnt/overlay/
+├── a
+│   └── 1
+│       └── 2
+│           └── 3
+├── b
+└── test.txt
+还有读写删除操作是如何进行的呢？有兴趣可以自己探索。
