@@ -1,0 +1,96 @@
+AUFS 文件系统的原理和实例
+前提条件:
+    安装 aufs-utils 和 mount 工具
+
+1. AUFS 文件系统的原理
+AUFS（Another Union File System） 是一种联合文件系统（Union File System），它允许多个文件系统（称为“分支”）合并成一个统一的视图。AUFS 的核心思想是通过将多个分支（目录）叠加在一起，形成一个逻辑上的文件系统。
+
+1.1 关键概念
+
+        分支（Branch）：
+
+            AUFS 中的分支是组成联合文件系统的目录。
+            分支分为两种：
+                只读分支（Read-Only Branch）：用于共享内容，无法修改。
+                可写分支（Writeable Branch）：用于存储修改的内容。
+        联合挂载（Union Mount）：
+
+            AUFS 的核心机制是联合挂载，将多个分支合并成一个统一的文件系统视图。
+            读取时，AUFS 按顺序查找文件，优先使用第一个存在的文件。
+            写入时，文件写入到可写分支中。
+        回滚（Rollback）：
+
+            AUFS 支持回滚功能，可以删除或回滚特定的分支，恢复到之前的状态。
+        分层存储（Layered Storage）：
+
+            AUFS 的分层存储机制允许每个容器或虚拟环境有一个独立的可写层，同时共享一个只读的基础层，从而节省存储空间。
+1.2 AUFS 的工作流程
+
+        挂载 AUFS 文件系统：
+
+            将多个分支（目录）挂载为一个联合文件系统。
+            读取时，按分支的优先级顺序查找文件。
+            写入时，文件写入到可写分支中。
+        分支的叠加顺序：
+            AUFS 的读取顺序是按分支的叠加顺序进行的，第一个存在的文件会被优先使用。
+            可写分支（writable）通常位于只读分支（readonly）之后，以确保写入时覆盖只读内容。
+        回滚机制：
+            AUFS 可以通过删除或回滚特定的分支，恢复到之前的状态。
+            这一特性常用于容器技术（如 Docker）中，支持快速回滚到之前的镜像版本。
+
+AUFS实例
+    创建分支
+        创建两个分支：/branch1（只读）和 /branch2（可写）。
+        [root@localhost ~]# sudo mkdir -p /branch1
+        [root@localhost ~]# sudo mkdir -p /branch2
+        在/branch1中创建一些文件：
+        [root@localhost ~]# sudo touch /branch1/file1.txt
+        [root@localhost ~]# sudo echo "This is file1 in branch1." > /branch1/file1.txt
+        在/branch2中创建一些文件：
+        [root@localhost ~]# sudo touch /branch2/file2.txt
+        [root@localhost ~]# sudo echo "This is file2 in branch2." > /branch2/file2.txt
+    挂载AUFS文件系统
+        选择一个挂载点，例如/mnt/aufs:
+        [root@localhost ~]# sudo mkdir -p /mnt/aufs
+        挂载 AUFS 文件系统，将 /branch1 和 /branch2 合并：
+        sudo mount -t aufs -o br:/branch1:ro,br:/branch2:rw  none /mnt/aufs
+        br:/branch1:ro：指定 /branch1 为只读分支。
+        br:/branch2:rw：指定 /branch2 为可写分支。
+        none：表示 AUFS 是一个伪设备
+    验证挂载
+        查看挂载信息
+        mount | grep aufs
+        输出信息：
+            none on /mnt/aufs type aufs (rw,relatime,br:/branch1:ro,br:/branch2:rw)
+        检查挂载点的内容
+        ls /mnt/aufs
+            应该看到 file1.txt 和 file2.txt
+    操作 AUFS 文件系统
+        读取文件：
+        cat /mnt/aufs/file1.txt
+            This is file1 in branch1.
+        cat /mnt/aufs/file2.txt
+            This is file2 in branch2.
+        写入文件：
+            echo "This is a new line." >> /mnt/aufs/file2.txt
+            验证写入成功：
+            cat /mnt/aufs/file2.txt
+                This is file2 in branch2.
+                This is a new line.
+    回滚AUFS分支
+        删除可写分支/branch2
+            sudo umount /mnt/aufs
+            sudo rmdir /branch2
+        重新挂载AUFS文件系统，不包含/branch2
+            sudo mount -t aufs -o br:/branch1:ro none /mnt/aufs
+        查看/mnt/aufs的内容
+            ls /mnt/aufs
+                应该只看到 file1.txt
+    卸载AUFS文件系统
+        sudo umount /mnt/aufs
+总结：
+    通过以上实例，可以看到 AUFS 的核心功能：
+    联合挂载：将多个分支合并成一个统一的文件系统视图。
+    分层存储：只读分支和可写分支的叠加，支持共享和独立存储。
+    回滚机制：通过删除或回滚特定分支，恢复到之前的状态。
+    AUFS 在容器技术、虚拟化和软件开发中具有广泛的应用，能够提供高效的存储管理和灵活的环境配置。 
