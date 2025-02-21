@@ -101,4 +101,18 @@ Settings for ens192:
         Supports Wake-on: uag
         Wake-on: d
         Link detected: yes  #表示是否检测到网络连接。yes表示检测到连接，no表示未检测到。
-
+查看操作系统的运行级别
+[root@localhost ~]# runlevel
+N 5
+列出系统中打开的文件和进程
+[root@localhost ~]# lsof
+查看启动端口
+[root@localhost ~]# lsof -i:22
+重新挂载
+sudo mount -o rw,remount /
+查看ssh的版本
+[root@kwephis1914886 ~]# ssh -V
+OpenSSH_8.2p1, OpenSSL 1.1.1f  31 Mar 2020
+检查sshd配置文件是否正确
+[root@kwephis1914886 ~]# sshd -t /etc/ssh/sshd_config
+Extra argument /etc/ssh/sshd_config.

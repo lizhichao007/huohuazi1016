@@ -1,0 +1,100 @@
+-> /var/log/messages:常规日志消息
+-> /var/log/boot:系统启动日志
+-> /var/log/debug:调试日志消息
+-> /var/log/auth.log:用户登录和身份验证日志
+-> /var/log/daemon.log: 运行squid,ntpd等其他日志消息到这个文件
+-> /var/log/dmesg: Linux内核环缓存日志
+-> /var/log/dpkg.log:所有二进制包日志都包括程序包安装和其他信息
+-> /var/log/faillog:用户登录日志文件失败
+-> /var/log/kern.log:内核日志文件
+-> /var/log/lpr.log:打印机日志文件
+-> /var/log/mail.*:所有邮件服务器消息日志文件
+-> /var/log/mysql.*:MySQL服务器日志文件
+-> /var/log/user.log:所有用户级日志
+-> /var/log/xorg.0.log:X.org日志文件
+-> /var/log/apache2/*: Apache Web服务器日志文件目录
+-> /var/log/lighttpd/*:Lighttpd Web服务器日志文件目录
+-> /var/log/fsck/*:fsck命令日志的
+-> /var/log/apport.log:应用程序崩溃报告/日志文件的
+-> /var/log/syslog:系统日志
+-> /var/log/ufw: ufw防火墙日志
+-> /var/log/gufw: gufw防火墙日志
+#使用tail, more,less和grep命令。
+tail -f /var/log/apport.log
+more /var/log/xorg.0.log
+cat /var/log/mysql.err
+less /var/log/messages
+grep -i fail /var/log/boot
+
+sudo ufw status 
+ifconfig  ens33 up 激活网卡
+ip link
+ip link show
+ip link show ens160
+ip link set ens160 up/down
+
+ip address show
+ip address show ens160
+ip address add|del  192.168.1.88/24 ens160
+
+ip route show
+ip route add default via 192.168.1.1 dev ens160
+ip route del default via 192.168.1.1 dev ens160
+ip neigh show
+ip neigh add 192.168.1.88 lladdr 00:11:22:33:44:55 dev ens160
+ip neigh del 192.168.1.88 dev ens160
+ip neigh flush all dev ens160
+
+ip link set kube-ipvs0 up 
+sudo nmcli networking up 
+ip link set kube-ipvs0 up 
+sudo nmcli networking up 
+sudo ufw status
+lvcreate -n lvol2 -L 6G vg00
+
+rsync -avz /usr/ root@ipaddress:/mnt/root/usr/
+
+[root@localhost ~]# cat /proc/partitions | grep '[0-9]' | grep -v 'fd[0-9]' | grep -v 'sr[0-9]' | grep -v 'cdrom' | grep -v 'dm-' | grep -v 'loop[0-9]' | grep -v 'ram' | awk '{print $4":"$3}'
+sda:20971520
+sda1:1048576
+sda2:19921920
+
+cat /proc/meminfo | grep MemTotal
+MemTotal:        8053056 kB
+
+[root@localhost ~]# pvs --separator ':' | grep -v 'PFree' | awk -F ':' '{print $1":"$2}'
+  /dev/sda2:rhel
+[root@localhost ~]# vgs --separator ':' | grep -v 'VG Free' | awk -F ':' '{print $1":"$2}'
+  rhel:vg00
+[root@localhost ~]# lvs --separator ':' | grep -v 'LV Size' | awk -F ':' '{print $1":"$2}'
+  /dev/vg00/lvol1:root
+  /dev/vg00/lvol2:swap
+
+[root@localhost ~]# eval echo "/dev/sda2:centos"  | cut -d ":" -f1
+/dev/sda2
+[root@localhost ~]# eval echo "/dev/sda2:centos"  | cut -d ":" -f2
+centos
+[root@localhost ~]# lvs | grep -v "LSize" | grep -v "_hconvertor_s" | awk -F ' ' '{print $1":"$2}'
+root:rhel
+swap:rhel
+
+apt list --installed | grep package_name
+dpkg -s package_name
+apt list --installed | grep package_name
+dpkg -s package_name
+
+vi /etc/netplan/00-installer-config.yaml
+ethernets:
+  eth0:
+    addresses:
+      - 192.168.1.100/24
+    gateway4: 192.168.1.1
+    nameservers:
+      addresses:
+        - 8.8.8.8
+        - 8.8.4.4
+      search: [example.com]
+version 2.0
+重启
+netplan apply
+
