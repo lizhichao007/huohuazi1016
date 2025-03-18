@@ -1,10 +1,10 @@
 from manim import * 
 class MyScene(Scene):
-    CONFIG = {
-        "camera_config":{
-            "background_image":r"C:\\Users\\l60071018\Desktop\\1.PNG"
-        },
-    }
+    # CONFIG = {
+    #     "camera_config":{
+    #         "background_image":r"C:\\Users\\l60071018\Desktop\\1.PNG"
+    #     },
+    # }
     def construct(self):
 
         # text1 = Text("ABCDEFG")
