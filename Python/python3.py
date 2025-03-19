@@ -60,3 +60,9 @@
 # print(dic) # {'name': 'libai', 'sex': 'boy', 'age': '21'}
 # # 以列表形式返回可遍历的键值元组数组
 # print(dic.items()) #dict_items([('name', 'libai'), ('sex', 'boy'), ('age', '21')])
+
+# set 是一个无序不重复元素集
+# set创建
+set1 = ([1,2,3,3,4,2])
+print(set1)
+print(type(set1)) #<class 'list'>
