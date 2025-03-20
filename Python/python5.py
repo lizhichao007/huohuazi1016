@@ -80,13 +80,29 @@ logger.setLevel(logging.DEBUG)
 # python提供了一种元组方式来接受没有直接定义的参数，需要在参数前边添加星号*
     # 如果在调用的时候没有指定参数，那么就是一个空元组
     # 当然，我们也可以不向函数传递未命名的变量
-def user_info (name, age, sex, *hobby):
-    print('name:{}'.format(name),end = ' ')
-    print('age:{}'.format(age),end = ' ')
-    print('sex:{}'.format(sex),end=' ')
-    print('hobby:{}'.format(hobby),end=' ')
-    return
+# def user_info (name, age, sex, *hobby):
+#     print('name:{}'.format(name),end = ' ')
+#     print('age:{}'.format(age),end = ' ')
+#     print('sex:{}'.format(sex),end=' ')
+#     print('hobby:{}'.format(hobby),end=' ')
+#     return
 
-user_info(name='libai',age='23',sex='boy') #name:libai age:23 sex:boy hobby:() 
-user_info('dufu',23,'boy','basketball','pingpang ball','swimming') #name:dufu age:23 sex:boy hobby:('basketball', 'pingpang ball', 'swimming') 
+# user_info(name='libai',age='23',sex='boy') #name:libai age:23 sex:boy hobby:() 
+# user_info('dufu',23,'boy','basketball','pingpang ball','swimming') #name:dufu age:23 sex:boy hobby:('basketball', 'pingpang ball', 'swimming') 
 
+# 只接受关键字参数
+    # 关键字参数使用起来简单，不容易出错，将强制关键字参数放到某个*参数或者单个*后面就能达到效果，举例说明
+# def user_info(name , *, age, sex):
+#     print(name)
+#     print(age)
+#     print(sex)
+#     return
+# user_info(name='libai',age='23',sex='boy')
+# user_info('libai',23,'boy') #报错 TypeError: user_info() takes 1 positional argument but 3 were given
+
+# 函数传值问题
+def value_test(value):
+    value=100
+value = 1
+value_test(value)
+print(value)
