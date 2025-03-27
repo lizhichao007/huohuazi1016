@@ -106,16 +106,16 @@
 # 实例方法和类方法
 
     # 结论：类方法改变，实例方法也会跟着改变
-# class Class_H(object):
-#     name = 'huohuazi1016'
-#     def my_info(self):
-#         print('name:' + self.name)
+class Class_H(object):
+    name = 'huohuazi1016'
+    def my_info(self):
+        print('name:' + self.name)
 
-# A = Class_H()
-# A.my_info()
+A = Class_H()
+A.my_info()
 
-# def my_new_info():
-#     print('火华子1016')
+def my_new_info():
+    print('火华子1016')
 
-# A.my_info=my_new_info
-# A.my_info()
+A.my_info=my_new_info
+A.my_info()
