@@ -192,32 +192,32 @@
     # Event对象的wait的方法只有在内部信号为真的时候才会很快的执行并完成返回。当Event对象的内部信号
     # 标志位假时，则wait方法一直等待到其为真时返回
 
-import threading
-class mThread(threading.Thread):
-    def __init__(self,threadname):
-        threading.Thread.__init__(self,name = threadname)
+# import threading
+# class mThread(threading.Thread):
+#     def __init__(self,threadname):
+#         threading.Thread.__init__(self,name = threadname)
 
-    def run(self):
-        #使用全局Event对象
-        global event
-        #判断Event对象内部信号标志
-        if event.isSet():
-            event.clear()
-            event.wait()
-            print(self.getName())
-        else:
-            print(self.getName())
-            #设置Event对象内部信号标志
-            event.set()
-#生成Event对象
-event = threading.Event()
-#设置Event对象内部信号标志
-event.set()
-t1=[]
-for i in range(10):
-    t = mThread(str(i))
-    #生成线程列表
-    t1.append(t)
-for i in t1:
-    #运行线程
-    i.start()
+#     def run(self):
+#         #使用全局Event对象
+#         global event
+#         #判断Event对象内部信号标志
+#         if event.isSet():
+#             event.clear()
+#             event.wait()
+#             print(self.getName())
+#         else:
+#             print(self.getName())
+#             #设置Event对象内部信号标志
+#             event.set()
+# #生成Event对象
+# event = threading.Event()
+# #设置Event对象内部信号标志
+# event.set()
+# t1=[]
+# for i in range(10):
+#     t = mThread(str(i))
+#     #生成线程列表
+#     t1.append(t)
+# for i in t1:
+#     #运行线程
+#     i.start()

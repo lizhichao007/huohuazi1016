@@ -66,16 +66,14 @@ import time
 # information()
 # 以上的信息不能变动，要是想修改人名等其他信息就比较麻烦
 # 使用以下方法
-def decorator(func):
-    def print_info(*args,**kwargs):
-        print(time.strftime('%Y-%m-%d'),time.localtime(time.time()))
-        func(*args,**kwargs)
+# def decorator(func):
+#     def print_info(*args,**kwargs):
+#         print(time.strftime('%Y-%m-%d'),time.localtime(time.time()))
+#         func(*args,**kwargs)
 
-@decorator
-def print_info(name,age):
-    print('name:' + name + ' ' + 'age:' + age)
+# @decorator
+# def print_info(name,age):
+#     print('name:' + name + ' ' + 'age:' + age)
 
-print('huohuazi1016',2)
+# print('huohuazi1016',2)
 
-xxx= 'abc'
-print('name:' + xxx)

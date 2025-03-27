@@ -46,12 +46,12 @@ import time
 
 # daemon属性
     #没有加daemon属性
-def worker(interval):
-    print('start time:{0}'.format(time.ctime()))
-    time.sleep(interval)
-    print('start end:{}'.format(time.ctime()))
+# def worker(interval):
+#     print('start time:{0}'.format(time.ctime()))
+#     time.sleep(interval)
+#     print('start end:{}'.format(time.ctime()))
 
-if __name__ == '__main__':
-    p = multiprocessing.Process(target=worker,args=(3,))
-    p.start()
-    print('end')
+# if __name__ == '__main__':
+#     p = multiprocessing.Process(target=worker,args=(3,))
+#     p.start()
+#     print('end')
