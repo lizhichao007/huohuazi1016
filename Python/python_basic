@@ -57,3 +57,64 @@ import sys; x = "hello"; sys.stdout.write(x+"\n")
 # 不换行输出
 x =1;y=2
 print (x,y)
+a = 10.0
+print(a)
+# 同事给多个变量赋值
+a = b = c = 1
+print(a)
+a,b,c = 1,2,'libai'
+print(a,b,c)
+# del a
+# print(a) #NameError: name 'a' is not defined
+
+# Python支持四种不同的数字类型：
+
+# int（有符号整型）
+# long（长整型，也可以代表八进制和十六进制）
+# float（浮点型）
+# complex（复数）
+
+
+# 索引
+  # 从左到右默认是0开始，从右向左默认是-1，-2，...，下标为空则整体输出
+strings = "abcdef"
+print(strings[0]) #a 
+print(strings[-1]) #f
+print(strings[2:4]) #cd
+print(strings[:3]) #abc
+print(strings[3:]) #def
+print(strings[::-1]) #fedcba 投下标：尾下标
+
+# 输出两次
+print(strings*2) #abcdefabcdef
+
+# 字符串拼接
+new_string = strings + "TEST"
+print(new_string) #abcdefTEST
+
+# 列表索引
+list = ["hello",985,168.2,"world"]
+
+print(list)
+print(list[0]) #hello
+print(list[-1])
+print(list[:2])
+print(list[2:]) 
+print(list[::-1])
+
+# 元组tuple类似，这里不在列举
+
+# 字典
+dict = {}
+print(type(dict))
+dict['one'] = "This is one"
+dict[2] = "This is two"
+print(dict)
+print(dict['one']) #This is one
+print(dict[2]) #This is two
+print(dict.keys()) #dict_keys(['one', 2])
+print(dict.values()) #dict_values(['This is one', 'This is two'])
+print(dict.items()) #dict_items([('one', 'This is one'), (2, 'This is two')])
+
+
+# 运算符 + - * / % // **
