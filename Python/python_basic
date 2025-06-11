@@ -135,3 +135,23 @@ a = a << 2 #运算数的各二进位全部左移若干位，由 << 右边的数�
 print(a) # 24
 a = a >> 2 #把">>"左边的运算数的各二进位全部右移若干位，>> 右边的数字指定了移动的位数
 print(a)
+# python 的逻辑运算符 and or not
+# 布尔"与" - 如果 x 为 False，x and y 返回 False，否则它返回 y 的计算值
+# 布尔"或" - 如果 x 是非 0，它返回 x 的计算值，否则它返回 y 的计算值。
+# 布尔"非" - 如果 x 为 True，返回 False 。如果 x 为 False，它返回 True
+a = 100
+b = 200
+if a and b:
+    print("a 和 b 都为真")
+else:
+    print("a 或 b 至少有一个为假")
+
+if a or b:
+    print("a 或 b 至少有一个为真")
+else:
+    print("a 和 b 都为假")
+# 修改a的值
+if not (a and b):
+    print(True)
+else:
+    print(False)
