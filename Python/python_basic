@@ -189,3 +189,33 @@ if a is not b:
     print(True)
 else:
     print(False)
+# python 运算优先级
+# 最高到最低优先级的所有运算符
+
+# **	指数 (最高优先级)
+# ~ + -	按位翻转, 一元加号和减号 (最后两个的方法名为 +@ 和 -@)
+# * / % //	乘，除，取模和取整除
+# + -	加法减法
+# >> <<	右移，左移运算符
+# &	位 'AND'
+# ^ |	位运算符
+# <= < > >=	比较运算符
+# <> == !=	等于运算符
+# = %= /= //= -= += *= **=	赋值运算符
+# is is not	身份运算符
+# in not in	成员运算符
+# not and or	逻辑运算符
+
+# 条件语句if
+# 循环语句 while for break continue pass（占位）
+for i in "hello":
+    print("当前字母:",i)
+print("循环结束")
+list = ['libai','dufu','taoyuanming']
+for i in list:
+    print("列表中一个元素:",i)
+# 使用索引获取列表中的值
+for index in range(len(list)):
+    print(list[index])
+# 练习，打印三角形，菱形，正方形等
+# https://www.runoob.com/w3cnote/prints-diamonds-triangles-rectangles.html
