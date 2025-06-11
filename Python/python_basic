@@ -155,3 +155,37 @@ if not (a and b):
     print(True)
 else:
     print(False)
+
+# 成员运算符
+# in not in
+a = 1
+list = [1,2,3,4,5]
+if a in list:
+    print(True)
+else:
+    print(False)
+a = 6
+if a not in list:
+    print(True)
+else:
+    print(False)
+
+# 身份运算符
+# is | is not 
+# is 用于判断两个变量引用对象是否为同一个(同一块内存空间)， == 用于判断引用变量的值是否相等。
+a = 100
+b = 100
+if a is b:
+    print(True)
+else:
+    print(False)
+if a ==b:
+    print(True)
+else:
+    print(False)
+print(id(a)) # 获取内存地址
+print(id(b))
+if a is not b:
+    print(True)
+else:
+    print(False)
